@@ -32,13 +32,13 @@ public class SeedTest implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        List<BalanceInput> listImput = BalanceInputBuild.build();
-        balanceInputRepository.saveAll(listImput);
+        List<BalanceInput> listInput = BalanceInputBuild.build();
+        balanceInputRepository.saveAll(listInput);
 
         List<BalanceOutPut> listOutPut = BalanceOutputBuild.build();
         balanceOutPutRepository.saveAll(listOutPut);
 
-        List<BalanceFlow> listFlow = BalanceFlowBuild.build(listImput, listOutPut);
+        List<BalanceFlow> listFlow = BalanceFlowBuild.build(listInput, listOutPut);
         balanceFlowRepository.saveAll(listFlow);
     }
 }
