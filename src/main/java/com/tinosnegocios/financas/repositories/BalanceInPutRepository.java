@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface BalanceInPutRepository extends JpaRepository<BalanceInput, Long> {
-    public List<BalanceInput> findAllByMoment();
+
 }

@@ -5,7 +5,9 @@ import com.tinosnegocios.financas.entities.BalanceInput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -22,5 +24,16 @@ public class BalanceInputController {
     public ResponseEntity<BalanceInput> getOneById(@PathVariable Long id) {
         BalanceInput balanceInput = service.findOneById(id);
         return ResponseEntity.ok().body(balanceInput);
+    }
+    @PostMapping
+    public ResponseEntity<BalanceInput> create(@RequestBody BalanceInput balanceInput){
+        BalanceInput inputObj = service.saveOne(balanceInput);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(inputObj.getId())
+                .toUri();
+
+        return ResponseEntity.created(uri).body(inputObj);
     }
 }

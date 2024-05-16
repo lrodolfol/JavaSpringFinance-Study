@@ -27,4 +27,7 @@ public class BalanceInputService {
 
         throw new ResourceNotFoundException(id);
     }
+    public BalanceInput saveOne(BalanceInput balanceInput) {
+        return balanceInoutRepository.save(balanceInput);
+    }
 }
