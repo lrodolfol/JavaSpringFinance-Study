@@ -30,4 +30,7 @@ public class BalanceInputService {
     public BalanceInput saveOne(BalanceInput balanceInput) {
         return balanceInoutRepository.save(balanceInput);
     }
+    public void deleteById(Long id){
+        balanceInoutRepository.deleteById(id);
+    }
 }
