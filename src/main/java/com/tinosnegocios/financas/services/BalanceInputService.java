@@ -41,7 +41,7 @@ public class BalanceInputService {
     public BalanceInput updateOne(BalanceInput balanceInput, Long id){
         try{
             BalanceInput inputObj = balanceInoutRepository.getReferenceById(id);
-            inputObj.setAmount(balanceInput.getAmount());
+            //inputObj.setAmount(balanceInput.getAmount());
             inputObj.setDescription(balanceInput.getDescription());
             inputObj.setObservation(balanceInput.getObservation());
             inputObj.setMoment(balanceInput.getMoment());
