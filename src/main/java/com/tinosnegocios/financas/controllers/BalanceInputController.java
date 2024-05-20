@@ -42,4 +42,14 @@ public class BalanceInputController {
 
         return ResponseEntity.noContent().build();
     }
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<BalanceInput> updateOne(@RequestBody BalanceInput balanceInput, @PathVariable Long id) {
+        BalanceInput newBalanceInput = service.updateOne(balanceInput, id);
+
+        if(newBalanceInput != null){
+            return ResponseEntity.ok().body(newBalanceInput);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
 }
