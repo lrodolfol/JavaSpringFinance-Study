@@ -1,7 +1,11 @@
 package com.tinosnegocios.financas.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
+
+@JsonIgnoreProperties
 public class Movie {
     public Movie() {
     }
@@ -31,6 +35,8 @@ public class Movie {
     private String Production;
     private String Website;
     private String Response;
+
+
 
     public String getTitle() {
         return Title;
