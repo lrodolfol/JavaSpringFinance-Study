@@ -1,9 +1,9 @@
 package com.tinosnegocios.financas.services;
 
+import com.tinosnegocios.financas.entities.BalanceOutPut;
 import com.tinosnegocios.financas.exceptions.ResourceNotFoundException;
 import com.tinosnegocios.financas.repositories.BalanceFlowRepository;
-import com.tinosnegocios.financas.repositories.BalanceInPutRepository;
-import com.tinosnegocios.financas.entities.BalanceInput;
+import com.tinosnegocios.financas.repositories.BalanceOutPutRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,40 +12,39 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BalanceInputService {
-    @Autowired(required = true)
-    private BalanceInPutRepository balanceInputRepository;
+public class BalanceOutPutService {
+    @Autowired
+    private BalanceOutPutRepository balanceOutPutRepository;
     @Autowired
     private BalanceFlowRepository balanceFlowRepository;
 
-    public List<BalanceInput> findAll(){
-        return balanceInputRepository.findAll();
+    public List<BalanceOutPut> findAll(){
+        return balanceOutPutRepository.findAll();
     }
-    public BalanceInput findOneById(Long id) {
-        Optional<BalanceInput> balanceInput = balanceInputRepository.findById(id);
+    public BalanceOutPut findOneById(Long id) {
+        Optional<BalanceOutPut> balanceInput = balanceOutPutRepository.findById(id);
         if(balanceInput.isPresent()){
             return balanceInput.get();
         }
 
         throw new ResourceNotFoundException(id);
     }
-    public BalanceInput saveOne(BalanceInput balanceInput) {
-        return balanceInputRepository.save(balanceInput);
+    public BalanceOutPut saveOne(BalanceOutPut balanceInput) {
+        return balanceOutPutRepository.save(balanceInput);
     }
     public void deleteById(Long id){
         balanceFlowRepository.deleteByInputId(id);
-        balanceInputRepository.deleteById(id);
+        balanceOutPutRepository.deleteById(id);
     }
-    public BalanceInput updateOne(BalanceInput balanceInput, Long id){
+    public BalanceOutPut updateOne(BalanceOutPut balanceInput, Long id){
         try{
-            BalanceInput inputObj = balanceInputRepository.getReferenceById(id);
+            BalanceOutPut inputObj = balanceOutPutRepository.getReferenceById(id);
             //inputObj.setAmount(balanceInput.getAmount());
             inputObj.setDescription(balanceInput.getDescription());
             inputObj.setObservation(balanceInput.getObservation());
             inputObj.setMoment(balanceInput.getMoment());
-            inputObj.setRealProfit(balanceInput.isRealProfit());
 
-            return balanceInputRepository.save(inputObj);
+            return balanceOutPutRepository.save(inputObj);
         }catch (EntityNotFoundException e){
             throw new ResourceNotFoundException(id);
         }

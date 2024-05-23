@@ -3,7 +3,6 @@ package com.tinosnegocios.financas.seedTest;
 import com.tinosnegocios.financas.entities.BalanceFlow;
 import com.tinosnegocios.financas.entities.BalanceInput;
 import com.tinosnegocios.financas.entities.BalanceOutPut;
-import com.tinosnegocios.financas.enuns.PaymentMethod;
 import com.tinosnegocios.financas.repositories.BalanceFlowRepository;
 import com.tinosnegocios.financas.repositories.BalanceInPutRepository;
 import com.tinosnegocios.financas.repositories.BalanceOutPutRepository;
@@ -15,8 +14,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Configuration

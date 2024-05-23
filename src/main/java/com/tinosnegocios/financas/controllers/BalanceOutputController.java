@@ -1,7 +1,7 @@
 package com.tinosnegocios.financas.controllers;
 
-import com.tinosnegocios.financas.services.BalanceInputService;
-import com.tinosnegocios.financas.entities.BalanceInput;
+import com.tinosnegocios.financas.entities.BalanceOutPut;
+import com.tinosnegocios.financas.services.BalanceOutPutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,23 +11,23 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("balance-input")
-public class BalanceInputController {
+@RequestMapping("balance-output")
+public class BalanceOutputController {
     @Autowired
-    private BalanceInputService service;
+    private BalanceOutPutService service;
     @GetMapping
-    public ResponseEntity<List<BalanceInput>> getAll() {
-        List<BalanceInput> balances = service.findAll();
+    public ResponseEntity<List<BalanceOutPut>> getAll() {
+        List<BalanceOutPut> balances = service.findAll();
         return ResponseEntity.ok().body(balances);
     }
     @GetMapping(value = "/{id}")
-    public ResponseEntity<BalanceInput> getOneById(@PathVariable Long id) {
-        BalanceInput balanceInput = service.findOneById(id);
-        return ResponseEntity.ok().body(balanceInput);
+    public ResponseEntity<BalanceOutPut> getOneById(@PathVariable Long id) {
+        BalanceOutPut balanceOutPut = service.findOneById(id);
+        return ResponseEntity.ok().body(balanceOutPut);
     }
     @PostMapping
-    public ResponseEntity<BalanceInput> create(@RequestBody BalanceInput balanceInput){
-        BalanceInput inputObj = service.saveOne(balanceInput);
+    public ResponseEntity<BalanceOutPut> create(@RequestBody BalanceOutPut balanceOutPut){
+        BalanceOutPut inputObj = service.saveOne(balanceOutPut);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -43,11 +43,11 @@ public class BalanceInputController {
         return ResponseEntity.noContent().build();
     }
     @PutMapping(value = "/{id}")
-    public ResponseEntity<BalanceInput> updateOne(@RequestBody BalanceInput balanceInput, @PathVariable Long id) {
-        BalanceInput newBalanceInput = service.updateOne(balanceInput, id);
+    public ResponseEntity<BalanceOutPut> updateOne(@RequestBody BalanceOutPut balanceOutput, @PathVariable Long id) {
+        BalanceOutPut newBalanceOutput = service.updateOne(balanceOutput, id);
 
-        if(newBalanceInput != null){
-            return ResponseEntity.ok().body(newBalanceInput);
+        if(newBalanceOutput != null){
+            return ResponseEntity.ok().body(newBalanceOutput);
         }
 
         return ResponseEntity.notFound().build();
