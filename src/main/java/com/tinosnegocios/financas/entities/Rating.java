@@ -17,9 +17,9 @@ public class Rating {
     public void setId(Long id) {
         Id = id;
     }
-    @SerializedName("Source")
+    @SerializedName("Source") //ao converter para json, o campo do json a ser lido é 'Source'
     private String TheSource;
-    @SerializedName("Value")
+    @SerializedName("Value") //ao converter para json, o campo do json a ser lido é 'Value'
     private String TheValue;
 
     @ManyToOne()

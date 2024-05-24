@@ -45,7 +45,7 @@ public class MovieService {
                 movie = convertJsonToObject(response.body());
             }
 
-            if(persist){
+            if(persist && movie.getResponse()){
                 persistMovie(movie);
             }
         } catch (InterruptedException | IOException e) {
@@ -60,7 +60,6 @@ public class MovieService {
         try{
             Gson gson = new Gson();
             movie = gson.fromJson(json, Movie.class);
-            System.out.println("Objeto convertido com sucesso");
         }catch (Exception ex) {
             System.out.println("Falha na conversao de objeto. ");
         }

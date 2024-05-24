@@ -1,5 +1,6 @@
 package com.tinosnegocios.financas.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.SerializedName;
 import jakarta.persistence.*;
 
@@ -24,7 +25,7 @@ public class Movie {
     }
 
     private String Title;
-    @SerializedName("Year")
+    @SerializedName("Year") //ao converter para json, o campo do json a ser lido é 'Year'
     private String TheYear;
     private String Rated;
     private String Released;
@@ -49,6 +50,7 @@ public class Movie {
     private String BoxOffice;
     private String Production;
     private String Website;
+    @Transient //nao salva no banco de dados
     private String Response;
 
 
@@ -245,8 +247,8 @@ public class Movie {
         Website = website;
     }
 
-    public String getResponse() {
-        return Response;
+    public boolean getResponse() {
+        return Response.equalsIgnoreCase("true");
     }
 
     public void setResponse(String response) {
