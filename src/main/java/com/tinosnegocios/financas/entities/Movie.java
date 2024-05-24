@@ -1,17 +1,31 @@
 package com.tinosnegocios.financas.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.gson.annotations.SerializedName;
+import jakarta.persistence.*;
 
 import java.util.List;
 
-
-@JsonIgnoreProperties
+@Entity
+@Table(name = "tb_movie")
 public class Movie {
     public Movie() {
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long Id;
+
+    public Long getId() {
+        return Id;
+    }
+
+    public void setId(Long id) {
+        Id = id;
+    }
+
     private String Title;
-    private String Year;
+    @SerializedName("Year")
+    private String TheYear;
     private String Rated;
     private String Released;
     private String Runtime;
@@ -24,6 +38,7 @@ public class Movie {
     private String Country;
     private String Awards;
     private String Poster;
+    @OneToMany(mappedBy = "movie")
     private List<Rating> Ratings;
     private String Metascore;
     private String imdbRating;
@@ -47,11 +62,11 @@ public class Movie {
     }
 
     public String getYear() {
-        return Year;
+        return TheYear;
     }
 
-    public void setYear(String year) {
-        Year = year;
+    public void setYear(String theYear) {
+        TheYear = theYear;
     }
 
     public String getRated() {

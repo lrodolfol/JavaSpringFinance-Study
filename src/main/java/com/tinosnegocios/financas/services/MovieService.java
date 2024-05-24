@@ -1,9 +1,9 @@
 package com.tinosnegocios.financas.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.tinosnegocios.financas.entities.Movie;
+import com.tinosnegocios.financas.repositories.MovieRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,8 +18,10 @@ import java.time.temporal.ChronoUnit;
 public class MovieService {
     private String movieUri = "http://www.omdbapi.com";
     private String myApiKey = "a03424d2";
+    @Autowired
+    private MovieRepository repository;
 
-    public Movie GetMovie(String title) {
+    public Movie GetMovie(String title, boolean persist) {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .timeout(Duration.of(10, ChronoUnit.SECONDS))
@@ -34,6 +36,10 @@ public class MovieService {
 
             if (response.statusCode() == 200 && !response.body().isEmpty()) {
                 movie = conterJsonToObject(response.body());
+            }
+
+            if(persist){
+                persistMovie(movie);
             }
         } catch (InterruptedException | IOException e) {
             throw new RuntimeException(e);
@@ -54,5 +60,9 @@ public class MovieService {
         }
 
         return movie;
+    }
+
+    private void persistMovie(Movie movie){
+        repository.save(movie);
     }
 }
