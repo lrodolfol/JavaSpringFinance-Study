@@ -16,7 +16,7 @@ public class MovieController {
 
     @GetMapping
     public ResponseEntity<Movie> GetMovie(String title, boolean persist){
-        Movie movie = service.GetMovie(title, persist);
+        Movie movie = service.getMovie(title, persist);
 
         return ResponseEntity.ok().body(movie);
     }

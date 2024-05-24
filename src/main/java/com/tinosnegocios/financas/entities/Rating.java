@@ -41,4 +41,7 @@ public class Rating {
     public void setTheValue(String theValue) {
         TheValue = theValue;
     }
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
 }

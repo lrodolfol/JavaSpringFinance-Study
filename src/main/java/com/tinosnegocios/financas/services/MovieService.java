@@ -2,7 +2,10 @@ package com.tinosnegocios.financas.services;
 
 import com.google.gson.Gson;
 import com.tinosnegocios.financas.entities.Movie;
+import com.tinosnegocios.financas.entities.Rating;
+import com.tinosnegocios.financas.exceptions.DataBaseException;
 import com.tinosnegocios.financas.repositories.MovieRepository;
+import com.tinosnegocios.financas.repositories.RatingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,15 +16,19 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class MovieService {
     private String movieUri = "http://www.omdbapi.com";
     private String myApiKey = "a03424d2";
     @Autowired
-    private MovieRepository repository;
+    private MovieRepository movieRepository;
+    @Autowired
+    RatingRepository ratingRepository;
 
-    public Movie GetMovie(String title, boolean persist) {
+    public Movie getMovie(String title, boolean persist) {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .timeout(Duration.of(10, ChronoUnit.SECONDS))
@@ -35,7 +42,7 @@ public class MovieService {
             //System.out.println("resposta: " + response.body());
 
             if (response.statusCode() == 200 && !response.body().isEmpty()) {
-                movie = conterJsonToObject(response.body());
+                movie = convertJsonToObject(response.body());
             }
 
             if(persist){
@@ -47,8 +54,7 @@ public class MovieService {
 
         return movie;
     }
-
-    private Movie conterJsonToObject(String json) {
+    private Movie convertJsonToObject(String json) {
         Movie movie = new Movie();
 
         try{
@@ -61,8 +67,20 @@ public class MovieService {
 
         return movie;
     }
-
     private void persistMovie(Movie movie){
-        repository.save(movie);
+        try{
+            Movie movieSalved = movieRepository.save(movie);
+            List<Rating> ratingList = new ArrayList<>();
+
+            for (Rating rating : movie.getRatings()) {
+                rating.setMovie(movieSalved);
+                ratingList.add(rating);
+            }
+
+            ratingRepository.saveAll(ratingList);
+        }catch(Exception ex){
+            throw new DataBaseException("Erro ao cadastrar dados. "+ ex.getMessage());
+        }
     }
+
 }
