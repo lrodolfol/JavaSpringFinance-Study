@@ -1,6 +1,8 @@
 package com.tinosnegocios.financas.services;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.tinosnegocios.financas.entities.Movie;
 import com.tinosnegocios.financas.entities.Rating;
 import com.tinosnegocios.financas.exceptions.DataBaseException;
@@ -58,7 +60,8 @@ public class MovieService {
         Movie movie = new Movie();
 
         try{
-            Gson gson = new Gson();
+            //Gson gson = new Gson();
+            Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
             movie = gson.fromJson(json, Movie.class);
         }catch (Exception ex) {
             System.out.println("Falha na conversao de objeto. ");

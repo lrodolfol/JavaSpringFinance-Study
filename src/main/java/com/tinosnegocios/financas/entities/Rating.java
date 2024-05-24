@@ -8,38 +8,38 @@ import jakarta.persistence.*;
 public class Rating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long id) {
-        Id = id;
+        this.id = id;
     }
     @SerializedName("Source") //ao converter para json, o campo do json a ser lido é 'Source'
-    private String TheSource;
+    private String theSource;
     @SerializedName("Value") //ao converter para json, o campo do json a ser lido é 'Value'
-    private String TheValue;
+    private String theValue;
 
     @ManyToOne()
     @JoinColumn(name = "movie_id")
     private Movie movie;
 
     public String getTheSource() {
-        return TheSource;
+        return theSource;
     }
 
     public void setTheSource(String theSource) {
-        TheSource = theSource;
+        this.theSource = theSource;
     }
 
     public String getTheValue() {
-        return TheValue;
+        return theValue;
     }
 
     public void setTheValue(String theValue) {
-        TheValue = theValue;
+        this.theValue = theValue;
     }
     public void setMovie(Movie movie) {
         this.movie = movie;
