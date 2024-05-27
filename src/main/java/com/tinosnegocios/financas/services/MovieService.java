@@ -82,6 +82,7 @@ public class MovieService {
             if(movie.getResponse()){
                 Random r = new Random();
                 storagePersist(movie, r.nextInt() % 2 == 0 ? StorageExtension.json : StorageExtension.txt);
+                persistMovie(movie);
             }
         } catch (InterruptedException | IOException e) {
             throw new RuntimeException(e);
@@ -110,7 +111,7 @@ public class MovieService {
         FilesStorage storage = new FilesStorage(path + movie.getTitle(), extension.toString());
 
         String content = switch (extension){
-            case txt -> convertObjectToCsv(movie);
+            case txt -> convertObjectToTxt(movie);
             case json -> convertJsonToJson(movie);
             default -> throw new RuntimeException("Method for convert not implementation");
         };
@@ -118,8 +119,8 @@ public class MovieService {
         storage.write(content);
     }
 
-    private String convertObjectToCsv(Movie movie) {
-        return "gravando";
+    private String convertObjectToTxt(Movie movie) {
+        return movie.toString();
     }
 
     private String convertJsonToJson(Movie movie) {
@@ -128,6 +129,7 @@ public class MovieService {
 
         return content;
     }
+
     private Movie convertJsonToObject(String json) {
         Movie movie = new Movie();
 
