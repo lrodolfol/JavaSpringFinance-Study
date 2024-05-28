@@ -3,6 +3,7 @@ package com.tinosnegocios.financas.services;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.tinosnegocios.financas.models.ConfigProperties;
 import com.tinosnegocios.financas.utils.FilesStorage;
 import com.tinosnegocios.financas.entities.Movie;
 import com.tinosnegocios.financas.entities.Rating;
@@ -28,11 +29,20 @@ import java.util.Random;
 @Service
 public class MovieService {
     private String movieUri = "http://www.omdbapi.com";
-    private String myApiKey = "a03424d2";
+    private String myApiKey;
+    private final ConfigProperties configProperties;
+
     @Autowired
     private MovieRepository movieRepository;
     @Autowired
     RatingRepository ratingRepository;
+
+    @Autowired
+    public MovieService(ConfigProperties configProperties) {
+        this.configProperties = configProperties;
+
+        this.myApiKey = this.configProperties.getOmdbKey();
+    }
 
     public Movie getMovie(String title) {
         Movie movie = new Movie();
