@@ -3,7 +3,7 @@ package com.tinosnegocios.financas.services;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.tinosnegocios.financas.models.ConfigProperties;
+import com.tinosnegocios.financas.models.config.ConfigProperties;
 import com.tinosnegocios.financas.utils.FilesStorage;
 import com.tinosnegocios.financas.entities.Movie;
 import com.tinosnegocios.financas.entities.Rating;

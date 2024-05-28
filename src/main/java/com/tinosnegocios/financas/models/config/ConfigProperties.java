@@ -1,4 +1,4 @@
-package com.tinosnegocios.financas.models;
+package com.tinosnegocios.financas.models.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
