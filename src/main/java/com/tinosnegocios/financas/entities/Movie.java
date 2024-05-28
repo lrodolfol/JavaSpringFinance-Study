@@ -251,4 +251,36 @@ public class Movie {
     public void setResponse(String response) {
         this.response = response;
     }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", theYear='" + theYear + '\'' +
+                ", rated='" + rated + '\'' +
+                ", released='" + released + '\'' +
+                ", runtime='" + runtime + '\'' +
+                ", genre='" + genre + '\'' +
+                ", director='" + director + '\'' +
+                ", writer='" + writer + '\'' +
+                ", actors='" + actors + '\'' +
+                ", plot='" + plot + '\'' +
+                ", language='" + language + '\'' +
+                ", country='" + country + '\'' +
+                ", awards='" + awards + '\'' +
+                ", poster='" + poster + '\'' +
+                ", ratings=" + ratings +
+                ", metascore='" + metascore + '\'' +
+                ", imdbRating='" + imdbRating + '\'' +
+                ", imdbVotes='" + imdbVotes + '\'' +
+                ", imdbID='" + imdbID + '\'' +
+                ", type='" + type + '\'' +
+                ", dvd='" + dvd + '\'' +
+                ", boxOffice='" + boxOffice + '\'' +
+                ", production='" + production + '\'' +
+                ", website='" + website + '\'' +
+                ", response='" + response + '\'' +
+                '}';
+    }
 }
