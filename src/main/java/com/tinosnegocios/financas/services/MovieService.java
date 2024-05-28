@@ -34,7 +34,7 @@ public class MovieService {
     @Autowired
     RatingRepository ratingRepository;
 
-    public Movie getMovie(String title, boolean persist) {
+    public Movie getMovie(String title) {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .timeout(Duration.of(10, ChronoUnit.SECONDS))
@@ -45,18 +45,10 @@ public class MovieService {
 
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            //System.out.println("resposta: " + response.body());
 
             if (response.statusCode() == 200 && !response.body().isEmpty()) {
                 movie = convertJsonToObject(response.body());
             }
-
-            if(persist && movie.getResponse()){
-                persistMovie(movie);
-            }
-
-
-
         } catch (InterruptedException | IOException e) {
             throw new RuntimeException(e);
         }
