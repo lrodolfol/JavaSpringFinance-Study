@@ -19,8 +19,6 @@ public class BalanceInputService {
     private BalanceInPutRepository balanceInputRepository;
     @Autowired
     private BalanceFlowRepository balanceFlowRepository;
-    @Autowired
-    private ModelMapper modelMapper;
 
     public List<BalanceInput> findAll(){
         return balanceInputRepository.findAll();
@@ -34,7 +32,7 @@ public class BalanceInputService {
         throw new ResourceNotFoundException(id);
     }
     public BalanceInput saveOne(BalanceInputDto balanceInputDto) {
-        BalanceInput balanceInput = modelMapper.map(balanceInputDto, BalanceInput.class);
+        BalanceInput balanceInput = new ModelMapper().map(balanceInputDto, BalanceInput.class);
 
         return balanceInputRepository.save(balanceInput);
     }
