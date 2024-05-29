@@ -1,5 +1,6 @@
 package com.tinosnegocios.financas.controllers;
 
+import com.tinosnegocios.financas.models.dto.BalanceInputDto;
 import com.tinosnegocios.financas.services.BalanceInputService;
 import com.tinosnegocios.financas.entities.BalanceInput;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,8 @@ public class BalanceInputController {
         return ResponseEntity.ok().body(balanceInput);
     }
     @PostMapping
-    public ResponseEntity<BalanceInput> create(@RequestBody BalanceInput balanceInput){
-        BalanceInput inputObj = service.saveOne(balanceInput);
+    public ResponseEntity<BalanceInput> create(@RequestBody BalanceInputDto dto){
+        BalanceInput inputObj = service.saveOne(dto);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
