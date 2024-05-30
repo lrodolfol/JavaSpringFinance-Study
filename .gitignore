@@ -32,3 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 /files/
+/src/resources/application-uat.properties
