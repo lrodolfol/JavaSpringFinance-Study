@@ -32,7 +32,8 @@ public class BalanceInputService {
         throw new ResourceNotFoundException(id);
     }
     public BalanceInput saveOne(BalanceInputDto balanceInputDto) {
-        BalanceInput balanceInput = new ModelMapper().map(balanceInputDto, BalanceInput.class);
+        ModelMapper mapper = new ModelMapper();
+        BalanceInput balanceInput = mapper.map(balanceInputDto, BalanceInput.class);
 
         return balanceInputRepository.save(balanceInput);
     }
