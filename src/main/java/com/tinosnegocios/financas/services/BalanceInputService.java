@@ -6,7 +6,6 @@ import com.tinosnegocios.financas.repositories.BalanceFlowRepository;
 import com.tinosnegocios.financas.repositories.BalanceInPutRepository;
 import com.tinosnegocios.financas.entities.BalanceInput;
 import jakarta.persistence.EntityNotFoundException;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,8 +31,7 @@ public class BalanceInputService {
         throw new ResourceNotFoundException(id);
     }
     public BalanceInput saveOne(BalanceInputDto balanceInputDto) {
-        ModelMapper mapper = new ModelMapper();
-        BalanceInput balanceInput = mapper.map(balanceInputDto, BalanceInput.class);
+        BalanceInput balanceInput = new BalanceInput(balanceInputDto);
 
         return balanceInputRepository.save(balanceInput);
     }

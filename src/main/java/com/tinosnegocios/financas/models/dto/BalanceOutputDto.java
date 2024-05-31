@@ -5,8 +5,8 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.Instant;
 
-public record BalanceOutputDto(Long id, @NotNull String description, @NotNull String observation, Double amount,
-                               Instant moment, @NotNull String establishment, Double discount, Double interest,
+public record BalanceOutputDto(String description, String observation, Double amount,
+                               Instant moment, String establishment, Double discount, Double interest,
                                boolean atypical, PaymentMethod paymentMethod) {
 
 }

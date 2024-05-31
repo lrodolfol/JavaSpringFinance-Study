@@ -2,6 +2,7 @@ package com.tinosnegocios.financas.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tinosnegocios.financas.enuns.PaymentMethod;
+import com.tinosnegocios.financas.models.dto.BalanceOutputDto;
 import jakarta.persistence.*;
 
 import java.time.Instant;
@@ -45,6 +46,17 @@ public class BalanceOutPut {
     }
     public void setPaymentMethod(PaymentMethod paymentMethod){
         this.paymentMethod = paymentMethod;
+    }
+    public BalanceOutPut(BalanceOutputDto dto) {
+        this.description = dto.description();
+        this.observation = dto.observation();
+        this.amount = dto.amount();
+        this.moment = dto.moment();
+        this.establishment = dto.establishment();
+        this.discount = dto.discount();
+        this.interest = dto.interest();
+        this.atypical = dto.atypical();
+        this.paymentMethod = dto.paymentMethod();
     }
     public BalanceOutPut() {
     }
