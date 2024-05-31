@@ -1,6 +1,7 @@
 package com.tinosnegocios.financas.services;
 
 import com.tinosnegocios.financas.exceptions.ResourceNotFoundException;
+import com.tinosnegocios.financas.models.dto.BalanceInputDto;
 import com.tinosnegocios.financas.repositories.BalanceFlowRepository;
 import com.tinosnegocios.financas.repositories.BalanceInPutRepository;
 import com.tinosnegocios.financas.entities.BalanceInput;
@@ -29,7 +30,9 @@ public class BalanceInputService {
 
         throw new ResourceNotFoundException(id);
     }
-    public BalanceInput saveOne(BalanceInput balanceInput) {
+    public BalanceInput saveOne(BalanceInputDto balanceInputDto) {
+        BalanceInput balanceInput = new BalanceInput(balanceInputDto);
+
         return balanceInputRepository.save(balanceInput);
     }
     public void deleteById(Long id){

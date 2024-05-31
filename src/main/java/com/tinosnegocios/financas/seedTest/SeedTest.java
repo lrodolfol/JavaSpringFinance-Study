@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Profile;
 import java.util.List;
 
 @Configuration
-@Profile("dev")
+@Profile("uat")
 public class SeedTest implements CommandLineRunner {
 
     @Autowired

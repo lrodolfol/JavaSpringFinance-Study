@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.tinosnegocios.financas.models.dto.BalanceInputDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -39,6 +40,13 @@ public class BalanceInput {
         this.realProfit = realProfit;
     }
 
+    public BalanceInput(BalanceInputDto dto) {
+        this.description = dto.description();
+        this.observation = dto.observation();
+        this.amount = dto.amount();
+        this.moment = dto.moment();
+        this.realProfit = dto.realProfit();
+    }
     public BalanceInput() {
     }
 

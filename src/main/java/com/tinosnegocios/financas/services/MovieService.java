@@ -3,7 +3,8 @@ package com.tinosnegocios.financas.services;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.tinosnegocios.financas.Utils.FilesStorage;
+import com.tinosnegocios.financas.models.config.ConfigProperties;
+import com.tinosnegocios.financas.utils.FilesStorage;
 import com.tinosnegocios.financas.entities.Movie;
 import com.tinosnegocios.financas.entities.Rating;
 import com.tinosnegocios.financas.enuns.StorageExtension;
@@ -28,70 +29,53 @@ import java.util.Random;
 @Service
 public class MovieService {
     private String movieUri = "http://www.omdbapi.com";
-    private String myApiKey = "a03424d2";
+    private String myApiKey;
+    private final ConfigProperties configProperties;
+
     @Autowired
     private MovieRepository movieRepository;
     @Autowired
     RatingRepository ratingRepository;
 
-    public Movie getMovie(String title, boolean persist) {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .timeout(Duration.of(10, ChronoUnit.SECONDS))
-                .uri(URI.create(movieUri + "/?t=" + title + "&apikey=" + myApiKey))
-                .build();
+    @Autowired
+    public MovieService(ConfigProperties configProperties) {
+        this.configProperties = configProperties;
 
+        this.myApiKey = this.configProperties.getOmdbKey();
+    }
+
+    public Movie getMovie(String title) {
         Movie movie = new Movie();
 
-        try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            //System.out.println("resposta: " + response.body());
+        HttpResponse<String> response = makeRequest(title);
 
-            if (response.statusCode() == 200 && !response.body().isEmpty()) {
-                movie = convertJsonToObject(response.body());
-            }
-
-            if(persist && movie.getResponse()){
-                persistMovie(movie);
-            }
-
-
-
-        } catch (InterruptedException | IOException e) {
-            throw new RuntimeException(e);
+        if (response.statusCode() == 200 && !response.body().isEmpty()) {
+            movie = convertJsonToObject(response.body());
         }
 
         return movie;
     }
+
     public Movie getAndPersistMovie(String title) {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .timeout(Duration.of(10, ChronoUnit.SECONDS))
-                .uri(URI.create(movieUri + "/?t=" + title + "&apikey=" + myApiKey))
-                .build();
-
         Movie movie = new Movie();
 
-        try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = makeRequest(title);
 
-            if (response.statusCode() == 200 && !response.body().isEmpty()) {
-                movie = convertJsonToObject(response.body());
-            }
+        if (response.statusCode() == 200 && !response.body().isEmpty()) {
+            movie = convertJsonToObject(response.body());
+        }
 
-            if(movie.getResponse()){
-                Random r = new Random();
-                storagePersist(movie, r.nextInt() % 2 == 0 ? StorageExtension.json : StorageExtension.txt);
-                persistMovie(movie);
-            }
-        } catch (InterruptedException | IOException e) {
-            throw new RuntimeException(e);
+        if (movie.getResponse()) {
+            Random r = new Random();
+            storagePersist(movie, r.nextInt() % 2 == 0 ? StorageExtension.json : StorageExtension.txt);
+            dataBasePersist(movie);
         }
 
         return movie;
     }
-    private void persistMovie(Movie movie){
-        try{
+
+    private void dataBasePersist(Movie movie) {
+        try {
             Movie movieSalved = movieRepository.save(movie);
             List<Rating> ratingList = new ArrayList<>();
 
@@ -101,8 +85,8 @@ public class MovieService {
             }
 
             ratingRepository.saveAll(ratingList);
-        }catch(Exception ex){
-            throw new DataBaseException("Erro ao cadastrar dados. "+ ex.getMessage());
+        } catch (Exception ex) {
+            throw new DataBaseException("Erro ao cadastrar dados. " + ex.getMessage());
         }
     }
 
@@ -110,7 +94,7 @@ public class MovieService {
         String path = System.getProperty("user.dir") + File.separator + "files" + File.separator + "movie_";
         FilesStorage storage = new FilesStorage(path + movie.getTitle(), extension.toString());
 
-        String content = switch (extension){
+        String content = switch (extension) {
             case txt -> convertObjectToTxt(movie);
             case json -> convertJsonToJson(movie);
             default -> throw new RuntimeException("Method for convert not implementation");
@@ -133,14 +117,32 @@ public class MovieService {
     private Movie convertJsonToObject(String json) {
         Movie movie = new Movie();
 
-        try{
+        try {
             //Gson gson = new Gson();
             Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
             movie = gson.fromJson(json, Movie.class);
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             System.out.println("Falha na conversao de objeto. ");
         }
 
         return movie;
+    }
+
+    private HttpResponse<String> makeRequest(String title) {
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .timeout(Duration.of(10, ChronoUnit.SECONDS))
+                    .uri(URI.create(movieUri + "/?t=" + title + "&apikey=" + myApiKey))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            return response;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

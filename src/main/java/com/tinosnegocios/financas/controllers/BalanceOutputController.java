@@ -1,6 +1,7 @@
 package com.tinosnegocios.financas.controllers;
 
 import com.tinosnegocios.financas.entities.BalanceOutPut;
+import com.tinosnegocios.financas.models.dto.BalanceOutputDto;
 import com.tinosnegocios.financas.services.BalanceOutPutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +27,8 @@ public class BalanceOutputController {
         return ResponseEntity.ok().body(balanceOutPut);
     }
     @PostMapping
-    public ResponseEntity<BalanceOutPut> create(@RequestBody BalanceOutPut balanceOutPut){
-        BalanceOutPut inputObj = service.saveOne(balanceOutPut);
+    public ResponseEntity<BalanceOutPut> create(@RequestBody BalanceOutputDto balanceOutPutDto){
+        BalanceOutPut inputObj = service.saveOne(balanceOutPutDto);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
