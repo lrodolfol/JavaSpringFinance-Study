@@ -6,6 +6,7 @@ import com.tinosnegocios.financas.exceptions.ResourceNotFoundException;
 import com.tinosnegocios.financas.models.dto.BalanceOutputDto;
 import com.tinosnegocios.financas.repositories.BalanceFlowRepository;
 import com.tinosnegocios.financas.repositories.BalanceOutPutRepository;
+import com.tinosnegocios.financas.utils.RedisService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,15 @@ public class BalanceOutPutService {
         throw new ResourceNotFoundException(id);
     }
     public BalanceOutPut saveOne(BalanceOutputDto balanceOutputDto) {
+        RedisService redis = new RedisService();
         BalanceOutPut balanceOutPut = new BalanceOutPut(balanceOutputDto);
+
+        String persistMovie = redis.getValue("PERSIST_BALANCES");
+        if(persistMovie.equalsIgnoreCase("FALSE")) {
+            return balanceOutPut;
+        }
+
+        redis.setValueJson(balanceOutPut.getDescription(), balanceOutPut.toString());
 
         return balanceOutPutRepository.save(balanceOutPut);
     }
