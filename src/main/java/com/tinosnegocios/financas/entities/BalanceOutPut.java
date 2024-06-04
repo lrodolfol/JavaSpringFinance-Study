@@ -132,4 +132,21 @@ public class BalanceOutPut {
     public void setAtypical(boolean atypical) {
         this.atypical = atypical;
     }
+
+    @Override
+    public String toString() {
+        return "BalanceOutPut{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", observation='" + observation + '\'' +
+                ", amount=" + amount +
+                ", moment=" + moment +
+                ", establishment='" + establishment + '\'' +
+                ", discount=" + discount +
+                ", interest=" + interest +
+                ", atypical=" + atypical +
+                ", paymentMethod=" + paymentMethod +
+                ", balanceFlowList=" + balanceFlowList +
+                '}';
+    }
 }
