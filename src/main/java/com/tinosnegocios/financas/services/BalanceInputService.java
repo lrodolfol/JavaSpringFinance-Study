@@ -5,6 +5,7 @@ import com.tinosnegocios.financas.models.dto.BalanceInputDto;
 import com.tinosnegocios.financas.repositories.BalanceFlowRepository;
 import com.tinosnegocios.financas.repositories.BalanceInPutRepository;
 import com.tinosnegocios.financas.entities.BalanceInput;
+import com.tinosnegocios.financas.utils.RedisService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,9 @@ public class BalanceInputService {
         throw new ResourceNotFoundException(id);
     }
     public BalanceInput saveOne(BalanceInputDto balanceInputDto) {
+        RedisService redis = new RedisService();
+        redis.setValue();
+
         BalanceInput balanceInput = new BalanceInput(balanceInputDto);
 
         return balanceInputRepository.save(balanceInput);
