@@ -1,5 +1,7 @@
 package com.tinosnegocios.financas.services;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.tinosnegocios.financas.exceptions.ResourceNotFoundException;
 import com.tinosnegocios.financas.models.dto.BalanceInputDto;
 import com.tinosnegocios.financas.repositories.BalanceFlowRepository;
@@ -33,9 +35,14 @@ public class BalanceInputService {
     }
     public BalanceInput saveOne(BalanceInputDto balanceInputDto) {
         RedisService redis = new RedisService();
-        redis.setValue();
-
         BalanceInput balanceInput = new BalanceInput(balanceInputDto);
+
+        String persistMovie = redis.getValue("PERSIST_BALANCES");
+        if(persistMovie.equalsIgnoreCase("FALSE")) {
+            return balanceInput;
+        }
+
+        redis.setValueJson(balanceInput.getDescription(), balanceInput.toString());
 
         return balanceInputRepository.save(balanceInput);
     }

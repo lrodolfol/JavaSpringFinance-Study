@@ -5,11 +5,18 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 public class RedisService {
-    public void setValue() {
+    public void setValueJson(String title, String json) {
         JedisPool pool = connect();
         try (Jedis jedis = pool.getResource()) {
-            jedis.set("foo", "bar");
-            System.out.println(jedis.get("foo")); // prints bar
+            jedis.set(title, json);
+        }
+    }
+
+    public String getValue(String key) {
+        JedisPool pool = connect();
+        try (Jedis jedis = pool.getResource()) {
+            String result = jedis.get(key);
+            return result;
         }
     }
 
